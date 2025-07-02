@@ -44,7 +44,7 @@ MODFLOW-AI MCP Server is a hosted service that provides AI assistants with deep 
 
 ### 1. Join the Waitlist
 
-Visit [www.modflow.ai/signup](https://www.modflow.ai/signup) to request access. You'll receive configuration instructions via email once approved.
+Visit [www.modflow.ai/login](https://www.modflow.ai/login) to request access. You'll receive configuration instructions via email once approved.
 
 ### 2. Compatible AI Assistants
 
@@ -183,4 +183,4 @@ Built with data from:
 
 **Note**: This is an alpha release. Features, performance, and documentation are actively evolving based on user feedback.
 
-*For access, visit [www.modflow.ai/signup](https://www.modflow.ai/signup)*
+*For access, visit [www.modflow.ai/login](https://www.modflow.ai/login)*
