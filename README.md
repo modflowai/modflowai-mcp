@@ -174,7 +174,7 @@ For questions or access requests: [LinkedIn](https://www.linkedin.com/in/dlz800)
 ## 🙏 Acknowledgments
 
 Built with data from:
-- [USGS MODFLOW](https://www.usgs.gov/software/modflow-6)
+- [USGS MODFLOW](https://www.usgs.gov/mission-areas/water-resources/science/modflow-and-related-programs)
 - [FloPy Project](https://github.com/modflowpy/flopy)
 - [PEST Suite](https://pesthomepage.org/)
 - And the broader groundwater modeling community
