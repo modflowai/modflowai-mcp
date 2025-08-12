@@ -96,7 +96,7 @@ After receiving your access email, configure your AI assistant using the provide
 **Good Examples:**
 - "Search for streamflow routing in mf6"
 - "How do I set up particle tracking with MODPATH 7?"
-- "Find the obs2obs utility in gwutils"
+- "Find the mod2obs utility in gwutils"
 - "Show me MODFLOW 6 lake package examples"
 
 **Less Effective:**
