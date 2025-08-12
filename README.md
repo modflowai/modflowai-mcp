@@ -36,9 +36,10 @@ MODFLOW-AI MCP Server is a hosted service that provides AI assistants with deep 
 
 - **Multi-Repository Search**: Access documentation from MODFLOW 6, PEST++, FloPy, and more
 - **Natural Language Queries**: Ask questions in plain English
-- **Smart Search**: Both text and semantic search capabilities
+- **Smart Search**: Both text and semantic search capabilities with automatic method selection
 - **Modeling Workflows**: Step-by-step guidance for creating groundwater models
 - **OAuth Authentication**: Secure access with GitHub or Google accounts
+- **Acronym Intelligence**: Automatic detection and expansion of MODFLOW/PEST acronyms
 
 ## 🚀 Getting Started
 
@@ -63,54 +64,149 @@ After receiving your access email, configure your AI assistant using the provide
 
 ## 📚 Available Tools
 
-### Repository Access
-- **list_repositories** - View all available documentation sources
-- **text_search_repository** - Search for specific terms and functions
-- **semantic_search_repository** - Find conceptual explanations
-- **get_file_content** - Retrieve specific documentation files
+### Primary Search Tools
 
-### Model Building (Advanced Users)
-- **setup_flopy_workspace** - Configure Python environment
-- **download_modflow_executable** - Get MODFLOW executables
-- **get_flopy_examples_info** - Access example models
-- **download_pestpp_executable** - Get PEST++ for calibration
+#### search_docs
+**Comprehensive search across ALL resources** (documentation, code, workflows)
+- Searches documentation, Python modules, and tutorial notebooks
+- Ultra-flexible repository parameter (arrays, comma/space/pipe-separated)
+- Supports wildcards (*), Boolean operators (AND/OR/NOT)
+- Automatically expands acronyms (UZF → Unsaturated Zone Flow)
+- When no repository specified, searches EVERYTHING
 
-## 💡 Usage Tips
+#### search_code
+**API and module search** for FloPy/PyEMU
+- Searches Python implementations, classes, and functions
+- Returns API signatures, parameters, and docstrings
+- Includes package codes (WEL, RCH, etc.) and model families
+- Direct GitHub links to source code
 
-### ✅ Do:
-- Focus queries on one repository at a time for best results
-- Use specific technical terms when searching (e.g., "WEL package" not "wells")
-- Start with `list_repositories` to explore available resources
-- Use `get_repository_navigation` before searching (provides repository-specific tips)
-- Ask follow-up questions to refine results
+#### search_tutorials
+**Tutorial and workflow search**
+- Finds working examples, notebooks, and step-by-step guides
+- Filters by complexity level (beginner to advanced)
+- Shows prerequisites and common modifications
+- Array search within use cases and implementation tips
 
-### ⚠️ Avoid These (Standard Context Engineering Best Practices):
-*These are typical recommendations for any MCP-based tool to ensure optimal results*
-- Ask multiple complex questions across different repositories in one query
-- Skip the exploration phase if you're new to groundwater modeling
-- Expect perfect results for very broad conceptual questions (be specific!)
-- Use generic terms when technical terms exist
+### Semantic Search Tools
 
-### 🎓 Example Queries
+#### semantic_search_docs
+**AI-powered conceptual search**
+- Uses OpenAI embeddings for concept understanding
+- Best for "how to" queries and exploratory research
+- Finds related content even with different terminology
 
-**Good Examples:**
-- "Search for streamflow routing in mf6"
-- "How do I set up particle tracking with MODPATH 7?"
-- "Find the mod2obs utility in gwutils"
-- "Show me MODFLOW 6 lake package examples"
+#### semantic_search_tutorials
+**Semantic tutorial search**
+- Domain-aware matching (uncertainty vs. flow modeling)
+- Complexity-appropriate results
+- Tool-specific implementations (PESTPP-IES, pyemu.ParameterEnsemble)
 
-**Less Effective:**
-- "Tell me everything about groundwater modeling"
-- "Search all repositories for flow"
-- "How does water work?"
+### Utility Tools
+
+#### get_file_content
+**Direct file retrieval**
+- Retrieves complete file content by exact path
+- Supports pagination for large files (>30KB)
+- Returns full source code or documentation with metadata
+- No truncation - handles files of any size
+
+#### get_modflow_ai_info
+**MODFLOW AI overview**
+- Explains what MODFLOW AI is and its capabilities
+- Lists all available repositories and tools
+- Provides database statistics and usage guidance
+- No parameters required
+
+## 💡 Usage Examples
+
+### How AI Agents Use These Tools
+
+When you ask your AI assistant about groundwater modeling, it uses these MCP tools behind the scenes:
+
+**User**: "How do I set up a pumping well in MODFLOW 6?"
+**AI Agent calls**: `mcp__mfaitools__search_docs` with query="WEL package MODFLOW 6"
+→ Returns: WEL package documentation, implementation examples, and API details
+
+**User**: "Show me a beginner tutorial for FloPy"
+**AI Agent calls**: `mcp__mfaitools__search_tutorials` with query="getting started" and complexity="beginner"
+→ Returns: Step-by-step FloPy tutorials with working code
+
+**User**: "Explain how particle tracking works in groundwater models"
+**AI Agent calls**: `mcp__mfaitools__semantic_search_docs` with conceptual query
+→ Returns: Theory and mathematical explanations of particle tracking
+
+**User**: "I need the NPF package documentation file"
+**AI Agent calls**: `mcp__mfaitools__get_file_content` with exact filepath
+→ Returns: Complete NPF documentation with all equations and parameters
+
+**User**: "What is MODFLOW AI?"
+**AI Agent calls**: `mcp__mfaitools__get_modflow_ai_info`
+→ Returns: Complete overview of MODFLOW AI capabilities and available resources
+
+### Query Optimization Tips
+
+✅ **Do:**
+- Use `search_docs` without a repository parameter to search everything
+- Use specific technical terms or acronyms (e.g., "UZF", "WEL package")
+- Start with `get_modflow_ai_info` to understand available resources
+- Use `semantic_search_docs` for conceptual questions
+- Combine multiple tools for comprehensive results
+
+⚠️ **Avoid:**
+- Overlapping searches with the same query across multiple tools
+- Using semantic search for exact function names (use `search_code` instead)
+- Very broad conceptual questions (be specific!)
+- Ignoring tool-specific strengths
+
+## 📊 Available Repositories
+
+### Code Repositories
+- **FloPy** - Python package for creating MODFLOW models (modules and tutorials)
+- **pyEMU** - Python tools for uncertainty analysis and PEST++ integration
+
+### Documentation Repositories
+- **MODFLOW AI** - MCP Server documentation and guides
+- **MODFLOW 6** - USGS modular groundwater flow model
+- **MODFLOW-USG** - Unstructured grid version
+- **PEST** - Parameter estimation toolkit
+- **PEST++** - Next-generation PEST tools
+- **PEST_HP** - High-performance computing version
+- **gwutils** - Groundwater utility programs
+- **plproc** - Pilot point processor
+
+## 🔍 Search Intelligence
+
+### Acronym Recognition
+The server recognizes common MODFLOW/PEST acronyms and automatically expands them:
+- **WEL** → Well Package
+- **RIV** → River Package
+- **MAW** → Multi-Aquifer Well
+- **CHD** → Constant Head Boundary
+- **DRN** → Drain Package
+- **EVT** → Evapotranspiration
+- **RCH** → Recharge
+- **SFR** → Streamflow Routing
+- And many more...
+
+### Smart Search Method Selection
+The server automatically selects the optimal search method:
+- **Text Search**: Used for exact terms, acronyms, or quoted phrases
+- **Semantic Search**: Used for conceptual queries and "how to" questions
+- **Hybrid Search**: Combines both methods for comprehensive results
+
+### GitHub URL Generation
+All code results include direct GitHub links:
+- FloPy modules: `github.com/modflowpy/flopy/blob/develop/...`
+- PyEMU modules: `github.com/pypest/pyemu/blob/develop/...`
 
 ## 🔍 Current Limitations (Alpha)
 
-- **Single Repository Focus**: Best results when querying one repository at a time
+- **Large File Pagination**: Files over 30KB are paginated to avoid token limits
 - **Search Refinement**: Complex multi-concept searches may need iteration
 - **Response Times**: May vary during peak usage or large result sets
 - **Documentation Coverage**: Continuously expanding indexed content
-- **Platform Support**: Some MCP clients still in testing
+- **Platform Support**: Some MCP clients require MCP-Remote for connection
 
 ## 🛡️ Security & Privacy
 
@@ -121,27 +217,12 @@ After receiving your access email, configure your AI assistant using the provide
 - **End-to-End Encryption**: All communications use HTTPS
 - **No Third-Party Access**: Your modeling questions remain completely confidential
 
-## 📊 Repositories Available
-
-### Code Repositories
-- **FloPy** - Python package for creating MODFLOW models
-- **pyEMU** - Python tools for uncertainty analysis
-
-### Documentation Repositories
-- **MODFLOW 6** - USGS modular groundwater flow model
-- **MODFLOW-USG** - Unstructured grid version
-- **PEST** - Parameter estimation toolkit
-- **PEST++** - Next-generation PEST tools
-- **PEST_HP** - High-performance computing version
-- **gwutils** - Groundwater utility programs
-- **plproc** - Pilot point processor
-
 ## 🐛 Known Issues (Alpha)
 
-1. **Complex Queries**: Multi-repository searches may return mixed results
-2. **Large Results**: Some searches may timeout with extensive matches
-3. **Navigation Tool**: Output is for AI use only (not user-friendly)
-4. **Platform Differences**: Configuration varies by AI assistant
+1. **Large Files**: Files over 30KB require pagination (use page parameter in get_file_content)
+2. **Platform Differences**: Some clients require MCP-Remote for connection
+3. **Search Limits**: Default limits may need adjustment for comprehensive results
+4. **Complex Queries**: Multi-concept searches may require refinement
 
 ## 💬 Feedback & Support
 
@@ -154,11 +235,21 @@ This is an alpha release and we value your input:
 
 ## 🗺️ Roadmap
 
+### Recently Completed (January 2025):
+- ✅ Fixed file content pagination for large files
+- ✅ Optimized page sizes for token limits
+- ✅ Enhanced search_docs to search ALL content types
+- ✅ Improved error handling for database queries
+
 ### Currently Working On:
-- [ ] Expanded documentation coverage (legal risk groundwater modeling corpus)
+- [ ] Expanded documentation coverage
+- [ ] Performance optimizations for large result sets
+- [ ] Enhanced semantic search capabilities
 
 ### Under Consideration:
-- [ ] Unifying tools into a single, more powerful tool
+- [ ] Unified super-tool combining all search capabilities
+- [ ] Real-time model execution capabilities
+- [ ] Integration with cloud modeling platforms
 
 ## 📄 License & Terms
 
