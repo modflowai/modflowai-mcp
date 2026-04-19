@@ -4,263 +4,236 @@
 
 <br>
 
-# MODFLOW-AI MCP Server (Alpha)
+# MODFLOW-AI MCP Server
 
-🚧 **Early Access Program** - Currently in alpha testing with limited availability.
+A hosted Model Context Protocol (MCP) server that gives AI assistants grounded access to MODFLOW, PEST, FloPy, and PyEMU documentation, code, and tutorials. Your assistant searches and retrieves real sources instead of guessing.
 
-Transform your AI assistant into a groundwater modeling expert with the MODFLOW-AI MCP Server. Access comprehensive documentation from 9+ major groundwater modeling tools directly through Claude, Cursor, or other MCP-compatible AI assistants.
-
-## 🌟 Project Status
-
-- 🟡 **Alpha Testing Phase** - Active development with community feedback
-- 📋 **Waitlist Access** - Limited availability during early testing
-- 🔄 **Frequent Updates** - New features and improvements regularly added
-- 💬 **Feedback Welcome** - Help shape the future of AI-assisted groundwater modeling
-
-## 📺 See It In Action
+## See It In Action
 
 ![MODFLOW-AI MCP Server - Repository Access](./assets/repositories-overview.png)
-*Access 9+ groundwater modeling tools and documentation repositories through simple queries*
+*Nine groundwater modeling repositories, queried through one server.*
 
-### Watch Demo Videos:
-- 🎥 [MODFLOW 6 Particle Tracking Tutorial](https://vimeo.com/1039073889)
-- 🎥 [PEST++ Optimization Setup](https://vimeo.com/1039073840)
-- 🎥 [PFAS Contamination Modeling](https://vimeo.com/1039073852)
-- 🎥 [PEST_HP Parallel Calibration](https://vimeo.com/1039073843)
+### Demo Videos
 
-## 🎯 What is MODFLOW-AI MCP Server?
+- [MODFLOW 6 Particle Tracking Tutorial](https://vimeo.com/1039073889)
+- [PEST++ Optimization Setup](https://vimeo.com/1039073840)
+- [PFAS Contamination Modeling](https://vimeo.com/1039073852)
+- [PEST_HP Parallel Calibration](https://vimeo.com/1039073843)
 
-MODFLOW-AI MCP Server is a hosted service that provides AI assistants with deep knowledge of groundwater modeling tools. Built on the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), it enables natural language access to technical documentation and modeling workflows.
+## What It Does
 
-### Key Features (Alpha)
+MODFLOW-AI MCP Server exposes seven tools over the [Model Context Protocol](https://modelcontextprotocol.io/). An AI assistant calls them to search documentation, retrieve files, and return cited answers.
 
-- **Multi-Repository Search**: Access documentation from MODFLOW 6, PEST++, FloPy, and more
-- **Natural Language Queries**: Ask questions in plain English
-- **Smart Search**: Both text and semantic search capabilities with automatic method selection
-- **Modeling Workflows**: Step-by-step guidance for creating groundwater models
-- **OAuth Authentication**: Secure access with GitHub or Google accounts
-- **Acronym Intelligence**: Automatic detection and expansion of MODFLOW/PEST acronyms
+### Key Features
 
-## 🚀 Getting Started
+- **Multi-repository search** across MODFLOW 6, MODFLOW-USG, PEST, PEST++, PEST_HP, plproc, gwutils, FloPy, and PyEMU.
+- **Text and semantic search**, each tuned for a specific content type (docs, code, tutorials).
+- **Acronym expansion** for MODFLOW/PEST terms (WEL, RIV, MAW, CHD, DRN, UZF, …).
+- **GitHub URLs** returned with every code or tutorial result.
+- **File retrieval by exact path**, with pagination for files over 30 KB.
+- **Authenticated access** — queries are not stored or logged.
 
-### 1. Join the Waitlist
+## Getting Started
 
-Visit [www.modflow.ai/login](https://www.modflow.ai/login) to request access. You'll receive configuration instructions via email once approved.
+### 1. Request access
+
+For access, visit [www.modflow.ai](https://www.modflow.ai). You'll receive configuration instructions by email.
 
 ### 2. Compatible AI Assistants
 
-**HTTP Transport** (Direct connection):
-- ✅ VS Code
-- ✅ Cursor
+**HTTP transport** (direct connection):
+- VS Code
+- Cursor
 
-**MCP-Remote Required**:
-- ✅ Claude Desktop
-- ✅ Claude.ai (Claude Code)
-- ✅ Windsurf
+**MCP-Remote required**:
+- Claude Desktop
+- Claude.ai (Claude Code)
+- Windsurf
+
+**Web UI integration**:
+- CopilotKit (React / Next.js)
+- Mastra AI Framework
+- Dual-panel interface with file content viewer
+- GitHub Flavored Markdown with syntax highlighting
 
 ### 3. Configuration
 
-After receiving your access email, configure your AI assistant using the provided endpoint. Detailed instructions are included in the welcome email.
+Your access email includes the endpoint URL and the exact configuration block for your client.
+
+## CopilotKit UI Implementation
+
+The repository ships a CopilotKit React reference app that demonstrates MCP tool integration end-to-end.
+
+### Highlights
+
+- **Dual-panel layout**: chat on the left, document viewer on the right.
+- **GitHub Flavored Markdown** with tables, strikethrough, and task lists.
+- **Syntax highlighting** across 8+ languages via a shared `CustomSyntaxHighlighter` component.
+- **File viewer** wired to the `get_file_content` tool.
+- **Tool cards** that surface MCP invocations with status.
+- **Responsive layout** sized for desktop development workflows.
+
+### Technical Notes
+
+- `react-markdown` v9+ with corrected inline code detection.
+- `CoAgent` state shared between chat and document panels.
+- Graceful fallbacks for unknown file types and large files.
+
+### File Structure
+
+```
+copilotkit-app/
+├── components/
+│   ├── CustomSyntaxHighlighter.tsx  # Centralized syntax highlighting
+│   ├── FileContentCard.tsx         # Document display component
+│   ├── MCPToolAction.tsx           # Tool visualization
+│   └── ToolCard.tsx                # Tool cards
+├── app/
+│   ├── page.tsx                    # Dual-panel main interface
+│   └── globals.css                 # Styling and themes
+└── package.json                    # Dependencies, incl. react-syntax-highlighter
+```
+
+Use it as a reference for building MCP-aware interfaces.
 
 ## 📚 Available Tools
 
-### Primary Search Tools
+### Search
 
 #### search_docs
-**Comprehensive search across ALL resources** (documentation, code, workflows)
-- Searches documentation, Python modules, and tutorial notebooks
-- Ultra-flexible repository parameter (arrays, comma/space/pipe-separated)
-- Supports wildcards (*), Boolean operators (AND/OR/NOT)
-- Automatically expands acronyms (UZF → Unsaturated Zone Flow)
-- When no repository specified, searches EVERYTHING
+Full-text search across documentation, Python modules, and tutorial notebooks.
+- Ultra-flexible `repository` parameter (array, comma / space / pipe / semicolon separated).
+- Wildcards (`*`) and boolean operators (`AND` / `OR` / `NOT`).
+- Acronym expansion (`UZF` → Unsaturated Zone Flow).
+- Omit `repository` to search everything.
 
 #### search_code
-**API and module search** for FloPy/PyEMU
-- Searches Python implementations, classes, and functions
-- Returns API signatures, parameters, and docstrings
-- Includes package codes (WEL, RCH, etc.) and model families
-- Direct GitHub links to source code
+API and module search for FloPy and PyEMU.
+- Returns signatures, parameters, docstrings.
+- Includes package codes (WEL, RCH, …) and model families.
+- Direct GitHub links to source.
 
 #### search_tutorials
-**Tutorial and workflow search**
-- Finds working examples, notebooks, and step-by-step guides
-- Filters by complexity level (beginner to advanced)
-- Shows prerequisites and common modifications
-- Array search within use cases and implementation tips
-
-### Semantic Search Tools
+Tutorials and workflows.
+- Filters by complexity (beginner / intermediate / advanced).
+- Shows prerequisites and common modifications.
+- Array search inside use cases and implementation tips.
 
 #### semantic_search_docs
-**AI-powered conceptual search**
-- Uses OpenAI embeddings for concept understanding
-- Best for "how to" queries and exploratory research
-- Finds related content even with different terminology
+Concept-based documentation search using OpenAI embeddings. Best for "how to" and exploratory queries.
 
 #### semantic_search_tutorials
-**Semantic tutorial search**
-- Domain-aware matching (uncertainty vs. flow modeling)
-- Complexity-appropriate results
-- Tool-specific implementations (PESTPP-IES, pyemu.ParameterEnsemble)
+Semantic search over tutorials with domain-aware matching (e.g., uncertainty vs. flow modeling).
 
-### Utility Tools
+### Retrieval
 
 #### get_file_content
-**Direct file retrieval**
-- Retrieves complete file content by exact path
-- Supports pagination for large files (>30KB)
-- Returns full source code or documentation with metadata
-- No truncation - handles files of any size
+Fetch a complete file by exact path. Paginates files over 30 KB.
 
 #### get_modflow_ai_info
-**MODFLOW AI overview**
-- Explains what MODFLOW AI is and its capabilities
-- Lists all available repositories and tools
-- Provides database statistics and usage guidance
-- No parameters required
+Server overview: available repositories, tools, and statistics. No parameters.
 
 ## 💡 Usage Examples
 
-### How AI Agents Use These Tools
-
-When you ask your AI assistant about groundwater modeling, it uses these MCP tools behind the scenes:
+### How AI agents use these tools
 
 **User**: "How do I set up a pumping well in MODFLOW 6?"
-**AI Agent calls**: `mcp__mfaitools__search_docs` with query="WEL package MODFLOW 6"
-→ Returns: WEL package documentation, implementation examples, and API details
+**Agent calls**: `search_docs` with `query="WEL package MODFLOW 6"`
+→ WEL package docs, examples, API.
 
 **User**: "Show me a beginner tutorial for FloPy"
-**AI Agent calls**: `mcp__mfaitools__search_tutorials` with query="getting started" and complexity="beginner"
-→ Returns: Step-by-step FloPy tutorials with working code
+**Agent calls**: `search_tutorials` with `query="getting started"`, `complexity="beginner"`
+→ Step-by-step FloPy tutorials with code.
 
 **User**: "Explain how particle tracking works in groundwater models"
-**AI Agent calls**: `mcp__mfaitools__semantic_search_docs` with conceptual query
-→ Returns: Theory and mathematical explanations of particle tracking
+**Agent calls**: `semantic_search_docs` with a conceptual query
+→ Theory and mathematical explanations.
 
 **User**: "I need the NPF package documentation file"
-**AI Agent calls**: `mcp__mfaitools__get_file_content` with exact filepath
-→ Returns: Complete NPF documentation with all equations and parameters
+**Agent calls**: `get_file_content` with the exact path
+→ Full NPF docs.
 
 **User**: "What is MODFLOW AI?"
-**AI Agent calls**: `mcp__mfaitools__get_modflow_ai_info`
-→ Returns: Complete overview of MODFLOW AI capabilities and available resources
+**Agent calls**: `get_modflow_ai_info`
+→ Server overview.
 
-### Query Optimization Tips
+### Query tips
 
-✅ **Do:**
-- Use `search_docs` without a repository parameter to search everything
-- Use specific technical terms or acronyms (e.g., "UZF", "WEL package")
-- Start with `get_modflow_ai_info` to understand available resources
-- Use `semantic_search_docs` for conceptual questions
-- Combine multiple tools for comprehensive results
-
-⚠️ **Avoid:**
-- Overlapping searches with the same query across multiple tools
-- Using semantic search for exact function names (use `search_code` instead)
-- Very broad conceptual questions (be specific!)
-- Ignoring tool-specific strengths
+- Use `search_docs` without a `repository` to search everything at once.
+- Use specific terms or acronyms (`UZF`, `WEL package`) rather than long sentences.
+- Start with `get_modflow_ai_info` to see what's available.
+- Use `semantic_search_docs` for "how / why" conceptual questions.
+- Avoid overlapping the same query across multiple tools in one turn.
+- Use `search_code` — not semantic search — for exact function or class names.
 
 ## 📊 Available Repositories
 
-### Code Repositories
-- **FloPy** - Python package for creating MODFLOW models (modules and tutorials)
-- **pyEMU** - Python tools for uncertainty analysis and PEST++ integration
+### Code
+- **FloPy** — Python package for MODFLOW (modules and tutorials).
+- **pyEMU** — Python tools for uncertainty analysis and PEST++ integration.
 
-### Documentation Repositories
-- **MODFLOW AI** - MCP Server documentation and guides
-- **MODFLOW 6** - USGS modular groundwater flow model
-- **MODFLOW-USG** - Unstructured grid version
-- **PEST** - Parameter estimation toolkit
-- **PEST++** - Next-generation PEST tools
-- **PEST_HP** - High-performance computing version
-- **gwutils** - Groundwater utility programs
-- **plproc** - Pilot point processor
+### Documentation
+- **MODFLOW AI** — Server documentation and guides.
+- **MODFLOW 6** — USGS modular groundwater flow model.
+- **MODFLOW-USG** — Unstructured grid version.
+- **PEST** — Parameter estimation toolkit.
+- **PEST++** — Next-generation PEST tools.
+- **PEST_HP** — High-performance computing version.
+- **gwutils** — Groundwater utility programs.
+- **plproc** — Pilot point processor.
 
 ## 🔍 Search Intelligence
 
 ### Acronym Recognition
-The server recognizes common MODFLOW/PEST acronyms and automatically expands them:
-- **WEL** → Well Package
-- **RIV** → River Package
-- **MAW** → Multi-Aquifer Well
-- **CHD** → Constant Head Boundary
-- **DRN** → Drain Package
-- **EVT** → Evapotranspiration
-- **RCH** → Recharge
-- **SFR** → Streamflow Routing
-- And many more...
 
-### Smart Search Method Selection
-The server automatically selects the optimal search method:
-- **Text Search**: Used for exact terms, acronyms, or quoted phrases
-- **Semantic Search**: Used for conceptual queries and "how to" questions
-- **Hybrid Search**: Combines both methods for comprehensive results
+The server expands common MODFLOW/PEST acronyms automatically:
 
-### GitHub URL Generation
-All code results include direct GitHub links:
-- FloPy modules: `github.com/modflowpy/flopy/blob/develop/...`
-- PyEMU modules: `github.com/pypest/pyemu/blob/develop/...`
+- `WEL` → Well Package
+- `RIV` → River Package
+- `MAW` → Multi-Aquifer Well
+- `CHD` → Constant Head Boundary
+- `DRN` → Drain Package
+- `EVT` → Evapotranspiration
+- `RCH` → Recharge
+- `SFR` → Streamflow Routing
+- … and more.
 
-## 🔍 Current Limitations (Alpha)
+### Method Selection
 
-- **Large File Pagination**: Files over 30KB are paginated to avoid token limits
-- **Search Refinement**: Complex multi-concept searches may need iteration
-- **Response Times**: May vary during peak usage or large result sets
-- **Documentation Coverage**: Continuously expanding indexed content
-- **Platform Support**: Some MCP clients require MCP-Remote for connection
+- **Text search** for exact terms, acronyms, quoted phrases.
+- **Semantic search** for conceptual / "how to" questions.
+- **Hybrid search** when a query benefits from both.
+
+### GitHub URLs
+
+Code results include direct links:
+- FloPy modules: `github.com/modflowpy/flopy/blob/develop/…`
+- PyEMU modules: `github.com/pypest/pyemu/blob/develop/…`
 
 ## 🛡️ Security & Privacy
 
-- **Complete Privacy**: Your queries are never stored, logged, or accessed by any means
-- **Zero Data Retention**: No query history, no response logging, no analytics tracking
-- **OAuth 2.0 Authentication**: Secure login via GitHub or Google (only for access control)
-- **Read-Only Access**: Cannot modify your data or repositories
-- **End-to-End Encryption**: All communications use HTTPS
-- **No Third-Party Access**: Your modeling questions remain completely confidential
-
-## 🐛 Known Issues (Alpha)
-
-1. **Large Files**: Files over 30KB require pagination (use page parameter in get_file_content)
-2. **Platform Differences**: Some clients require MCP-Remote for connection
-3. **Search Limits**: Default limits may need adjustment for comprehensive results
-4. **Complex Queries**: Multi-concept searches may require refinement
+- **No query storage.** Queries are not stored, logged, or analyzed.
+- **No retention.** No query history, no response logging, no analytics tracking.
+- **Authenticated access** for access control only.
+- **Read-only.** The server cannot modify your data or repositories.
+- **HTTPS everywhere.**
+- **No third-party access** to your queries.
 
 ## 💬 Feedback & Support
 
-This is an alpha release and we value your input:
-
-- **Report Issues**: Reply to your access email
-- **Feature Requests**: Share what would help your workflow
-- **Success Stories**: Let us know what's working well
-- **Documentation**: Suggest improvements or corrections
-
-## 🗺️ Roadmap
-
-### Recently Completed (January 2025):
-- ✅ Fixed file content pagination for large files
-- ✅ Optimized page sizes for token limits
-- ✅ Enhanced search_docs to search ALL content types
-- ✅ Improved error handling for database queries
-
-### Currently Working On:
-- [ ] Expanded documentation coverage
-- [ ] Performance optimizations for large result sets
-- [ ] Enhanced semantic search capabilities
-
-### Under Consideration:
-- [ ] Unified super-tool combining all search capabilities
-- [ ] Real-time model execution capabilities
-- [ ] Integration with cloud modeling platforms
+- **Issues and questions**: reach out via the contact in your access email.
+- **Feature requests**: tell us what would help your workflow.
+- **Corrections**: suggest improvements to docs or coverage.
 
 ## 📄 License & Terms
 
-MODFLOW-AI MCP Server is a proprietary hosted service. By using this service, you agree to:
-- Use the service responsibly and within rate limits
-- Not attempt to reverse engineer or abuse the service
-- Provide feedback to help improve the alpha version
+MODFLOW-AI MCP Server is a proprietary hosted service. By using it you agree to:
+- Use the service within rate limits.
+- Not reverse-engineer or abuse the service.
 
-The service is provided as-is during alpha testing. No source code is shared or licensed for redistribution.
+The service is provided as-is. No source code is licensed for redistribution.
 
-For questions or access requests: [LinkedIn](https://www.linkedin.com/in/dlz800)
+For questions or access: [LinkedIn](https://www.linkedin.com/in/dlz800).
 
 ## 🙏 Acknowledgments
 
@@ -268,10 +241,8 @@ Built with data from:
 - [USGS MODFLOW](https://www.usgs.gov/mission-areas/water-resources/science/modflow-and-related-programs)
 - [FloPy Project](https://github.com/modflowpy/flopy)
 - [PEST Suite](https://pesthomepage.org/)
-- And the broader groundwater modeling community
+- The broader groundwater modeling community.
 
 ---
 
-**Note**: This is an alpha release. Features, performance, and documentation are actively evolving based on user feedback.
-
-*For access, visit [www.modflow.ai/login](https://www.modflow.ai/login)*
+*For access, visit [www.modflow.ai](https://www.modflow.ai).*
