@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/modflow-ai-logo.svg" alt="MODFLOW-AI Logo" width="200" height="200">
+  <img src="./assets/modflow-ai-wordmark.png" alt="MODFLOW AI" width="400">
 </div>
 
 <br>
