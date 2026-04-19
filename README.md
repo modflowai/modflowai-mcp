@@ -38,51 +38,9 @@ For access, visit [www.modflow.ai](https://www.modflow.ai). You'll receive confi
 - Claude.ai (Claude Code)
 - Windsurf
 
-**Web UI integration**:
-- CopilotKit (React / Next.js)
-- Mastra AI Framework
-- Dual-panel interface with file content viewer
-- GitHub Flavored Markdown with syntax highlighting
-
 ### 3. Configuration
 
 Your access email includes the endpoint URL and the exact configuration block for your client.
-
-## CopilotKit UI Implementation
-
-The repository ships a CopilotKit React reference app that demonstrates MCP tool integration end-to-end.
-
-### Highlights
-
-- **Dual-panel layout**: chat on the left, document viewer on the right.
-- **GitHub Flavored Markdown** with tables, strikethrough, and task lists.
-- **Syntax highlighting** across 8+ languages via a shared `CustomSyntaxHighlighter` component.
-- **File viewer** wired to the `get_file_content` tool.
-- **Tool cards** that surface MCP invocations with status.
-- **Responsive layout** sized for desktop development workflows.
-
-### Technical Notes
-
-- `react-markdown` v9+ with corrected inline code detection.
-- `CoAgent` state shared between chat and document panels.
-- Graceful fallbacks for unknown file types and large files.
-
-### File Structure
-
-```
-copilotkit-app/
-├── components/
-│   ├── CustomSyntaxHighlighter.tsx  # Centralized syntax highlighting
-│   ├── FileContentCard.tsx         # Document display component
-│   ├── MCPToolAction.tsx           # Tool visualization
-│   └── ToolCard.tsx                # Tool cards
-├── app/
-│   ├── page.tsx                    # Dual-panel main interface
-│   └── globals.css                 # Styling and themes
-└── package.json                    # Dependencies, incl. react-syntax-highlighter
-```
-
-Use it as a reference for building MCP-aware interfaces.
 
 ## 📚 Available Tools
 
