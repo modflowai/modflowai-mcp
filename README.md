@@ -8,18 +8,6 @@
 
 A hosted Model Context Protocol (MCP) server that gives AI assistants grounded access to MODFLOW, PEST, FloPy, and PyEMU documentation, code, and tutorials. Your assistant searches and retrieves real sources instead of guessing.
 
-## See It In Action
-
-![MODFLOW-AI MCP Server - Repository Access](./assets/repositories-overview.png)
-*Nine groundwater modeling repositories, queried through one server.*
-
-### Demo Videos
-
-- [MODFLOW 6 Particle Tracking Tutorial](https://vimeo.com/1039073889)
-- [PEST++ Optimization Setup](https://vimeo.com/1039073840)
-- [PFAS Contamination Modeling](https://vimeo.com/1039073852)
-- [PEST_HP Parallel Calibration](https://vimeo.com/1039073843)
-
 ## What It Does
 
 MODFLOW-AI MCP Server exposes seven tools over the [Model Context Protocol](https://modelcontextprotocol.io/). An AI assistant calls them to search documentation, retrieve files, and return cited answers.
@@ -209,15 +197,6 @@ The server expands common MODFLOW/PEST acronyms automatically:
 Code results include direct links:
 - FloPy modules: `github.com/modflowpy/flopy/blob/develop/…`
 - PyEMU modules: `github.com/pypest/pyemu/blob/develop/…`
-
-## 🛡️ Security & Privacy
-
-- **No query storage.** Queries are not stored, logged, or analyzed.
-- **No retention.** No query history, no response logging, no analytics tracking.
-- **Authenticated access** for access control only.
-- **Read-only.** The server cannot modify your data or repositories.
-- **HTTPS everywhere.**
-- **No third-party access** to your queries.
 
 ## 💬 Feedback & Support
 
