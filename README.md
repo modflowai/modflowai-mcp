@@ -10,7 +10,7 @@ A hosted Model Context Protocol (MCP) server that gives AI assistants grounded a
 
 ## What It Does
 
-MODFLOW-AI MCP Server exposes seven tools over the [Model Context Protocol](https://modelcontextprotocol.io/). An AI assistant calls them to search documentation, retrieve files, and return cited answers.
+MODFLOW-AI MCP Server exposes nine tools over the [Model Context Protocol](https://modelcontextprotocol.io/). An AI assistant calls them to search documentation, retrieve files, and return cited answers.
 
 ### Key Features
 
@@ -19,6 +19,7 @@ MODFLOW-AI MCP Server exposes seven tools over the [Model Context Protocol](http
 - **Acronym expansion** for MODFLOW/PEST terms (WEL, RIV, MAW, CHD, DRN, UZF, …).
 - **GitHub URLs** returned with every code or tutorial result.
 - **File retrieval by exact path**, with pagination for files over 30 KB.
+- **Indexed ModelMuse Help**, with ranked search, page retrieval, and internal links.
 - **Authenticated access** — queries are not stored or logged.
 
 ## Getting Started
@@ -71,10 +72,19 @@ Concept-based documentation search using OpenAI embeddings. Best for "how to" an
 #### semantic_search_tutorials
 Semantic search over tutorials with domain-aware matching (e.g., uncertainty vs. flow modeling).
 
+#### search_modelmuse_help
+Full-text search over the indexed ModelMuse HTML Help.
+- Best for ModelMuse dialogs, menu commands, objects, formulas, and package setup.
+- Expands acronyms such as `MAW` automatically.
+- Returns exact `href` values for page retrieval.
+
 ### Retrieval
 
 #### get_file_content
 Fetch a complete file by exact path. Paginates files over 30 KB.
+
+#### get_modelmuse_help_page
+Fetch an indexed ModelMuse Help page using an exact `href` from `search_modelmuse_help`. Large pages are paginated and can include up to 100 internal links.
 
 #### get_modflow_ai_info
 Server overview: available repositories, tools, and statistics. No parameters.
@@ -103,12 +113,17 @@ Server overview: available repositories, tools, and statistics. No parameters.
 **Agent calls**: `get_modflow_ai_info`
 → Server overview.
 
+**User**: "Where do I configure the MAW package in ModelMuse?"
+**Agent calls**: `search_modelmuse_help` with `query="MAW"`, then `get_modelmuse_help_page` with the returned `href`
+→ The indexed ModelMuse Help topic and its internal links.
+
 ### Query tips
 
 - Use `search_docs` without a `repository` to search everything at once.
 - Use specific terms or acronyms (`UZF`, `WEL package`) rather than long sentences.
 - Start with `get_modflow_ai_info` to see what's available.
 - Use `semantic_search_docs` for "how / why" conceptual questions.
+- Use `search_modelmuse_help` for ModelMuse interface and setup questions.
 - Avoid overlapping the same query across multiple tools in one turn.
 - Use `search_code` — not semantic search — for exact function or class names.
 
